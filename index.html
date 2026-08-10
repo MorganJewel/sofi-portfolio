@@ -27,6 +27,14 @@
             user-select: none; /* Stops text highlighted accidentally while dragging */
         }
 
+        .scrapbook-cluster {
+            pointer-events: none;
+        }
+
+        .scrapbook-cluster img,
+        .scrapbook-cluster .cluster-label {
+            pointer-events: auto;
+        }
         /* ADDED FOR DRAGGING STATE: Shows a gripping hand icon while holding mouse click down */
         body:active {
             cursor: grabbing;
