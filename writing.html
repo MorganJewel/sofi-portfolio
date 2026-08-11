@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofi Olona - About</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Fraunces', Georgia, serif;
+            background-image: url('attempt.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+
+            /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
+            cursor: grab;
+            overflow: hidden; /* Prevents ugly browser scrollbars */
+            user-select: none; /* Stops text highlighted accidentally while dragging */
+        }
+
+        .content-container {
+            max-width: 600px;
+            padding: 40px;
+        }
+
+        h1 {
+            font-family: 'Bentham', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .back-link {
+            margin-top: 30px;
+            display: inline-block;
+            color: white;
+            text-decoration: underline;
+            font-family: 'Special Elite', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            opacity: 0.7;
+        }
+
+        /* IMAGE SLOT NOTE: no image CSS classes added yet, on purpose */
+    </style>
+</head>
+<body>
+
+    <div class="content-container" id="main-content">
+
+        <h1>About Me</h1>
+
+        <!-- IMAGE: headshot / paper clip cluster graphic goes here eventually -->
+
+        <p>
+            [Placeholder bio text goes here. Replace this paragraph with Sofi's
+            actual about-me copy — background, artistic identity, what drives
+            her work as a theatrical director, devisor, and writer.]
+        </p>
+
+        <p>
+            [Second placeholder paragraph — could cover training, influences,
+            or a personal note. Swap this out with real content whenever it's ready.]
+        </p>
+
+        <a href="index.html" class="back-link">&larr; Back to Home</a>
+
+    </div>
+
+</body>
+</html>
