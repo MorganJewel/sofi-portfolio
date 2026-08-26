@@ -31,7 +31,7 @@
 
         .about-wrap {
             width: 100%;
-            max-width: 720px;
+            max-width: 980px;
             margin: 0 auto;
             padding: 70px 24px 90px;
         }
@@ -68,20 +68,21 @@
 
         /* ---------- Body copy card ---------- */
         .bio-card {
-            background-image: url('/doc/about/paperabout.png');
+            background-image: url('/docs/about/paperabout.png');
             background-size: 100% 100%;
             background-repeat: no-repeat;
             color: var(--ink);
-            padding: 70px 60px;
+            padding: 100px 100px;
+            min-height: 780px;
             transform: rotate(-0.4deg);
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.25));
             text-align: left;
         }
 
         .bio-card p {
-            font-size: 1.08rem;
-            line-height: 1.75;
-            margin: 0 0 18px;
+            font-size: 1.2rem;
+            line-height: 1.85;
+            margin: 0 0 22px;
         }
 
         .bio-card p:last-child { margin-bottom: 0; }
@@ -129,7 +130,8 @@
         }
 
         @media (max-width: 600px) {
-            .bio-card { padding: 50px 32px; }
+            .bio-card { padding: 50px 32px; min-height: 0; }
+            .bio-card p { font-size: 1.05rem; }
             .scrap-deco { display: none; }
         }
     </style>
