@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sofi Olona - About</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bentham&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --deep-plum: #4B0350;
+            --accent-mauve: #9A4EAE;
+            --parchment: rgba(251, 241, 228, 0.93);
+            --ink: #3B2A2E;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
             padding: 0;
@@ -12,90 +22,147 @@
             background-image: url('attempt.png');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             background-repeat: repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             color: white;
             text-align: center;
-
-            /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
-            cursor: grab;
-            overflow: hidden; /* Prevents ugly browser scrollbars */
-            user-select: none; /* Stops text highlighted accidentally while dragging */
         }
 
-        .content-container {
-            max-width: 600px;
-            padding: 40px;
+        .about-wrap {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 70px 24px 90px;
         }
 
-        h1 {
+        /* ---------- Header ---------- */
+        .page-title {
             font-family: 'Bentham', serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            font-size: clamp(3.5rem, 10vw, 6.5rem);
+            color: var(--deep-plum);
+            letter-spacing: 2px;
+            margin: 0;
         }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 16px;
+        .byline {
+            font-family: 'Special Elite', monospace;
+            font-size: clamp(1.4rem, 4.5vw, 2.1rem);
+            color: var(--accent-mauve);
+            letter-spacing: 3px;
+            margin: 12px 0 0;
+        }
+
+        .divider {
+            width: 140px;
+            height: 2px;
+            margin: 34px auto;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--accent-mauve) 0 10px,
+                transparent 10px 16px
+            );
+            opacity: 0.8;
+            border: none;
+        }
+
+        /* ---------- Body copy card ---------- */
+        .bio-card {
+            background-image: url('/doc/about/paperabout.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            color: var(--ink);
+            padding: 70px 60px;
+            transform: rotate(-0.4deg);
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.25));
+            text-align: left;
+        }
+
+        .bio-card p {
+            font-size: 1.08rem;
+            line-height: 1.75;
+            margin: 0 0 18px;
+        }
+
+        .bio-card p:last-child { margin-bottom: 0; }
+
+        /* ---------- Footer / back link ---------- */
+        .about-footer {
+            position: relative;
+            margin-top: 60px;
         }
 
         .back-link {
-            margin-top: 30px;
             display: inline-block;
             color: white;
-            text-decoration: underline;
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.8);
             font-family: 'Special Elite', monospace;
-            font-size: 0.9rem;
-            cursor: pointer;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            transition: opacity 0.2s ease;
         }
 
-        .back-link:hover {
-            opacity: 0.7;
+        .back-link:hover { opacity: 0.65; }
+
+        /* small scrapbook clutter reused from the homepage's docs/ assets */
+        .scrap-deco {
+            position: absolute;
+            width: 90px;
+            pointer-events: none;
+            opacity: 0.9;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
         }
 
-        /* IMAGE SLOT NOTE: no image CSS classes added yet, on purpose */
+        .scrap-deco.left {
+            left: -30px;
+            top: -40px;
+            transform: rotate(-14deg);
+        }
+
+        .scrap-deco.right {
+            right: -30px;
+            top: -30px;
+            width: 70px;
+            transform: rotate(10deg);
+        }
+
+        @media (max-width: 600px) {
+            .bio-card { padding: 50px 32px; }
+            .scrap-deco { display: none; }
+        }
     </style>
 </head>
 <body>
+    <div class="about-wrap" id="about-content">
+        <h1 class="page-title">About Me</h1>
+        <p class="byline">Sofi Olona</p>
+        <hr class="divider">
 
-    <div class="content-container" id="main-content">
+        <div class="bio-card">
+            <p>
+                I'm a Mexican-American theatrical artist born and raised in Los Angeles, based in Chicago. And guys...I'm really good.
+            </p>
+            <p>
+                Currently, I am in my fourth year at The Theatre School at DePaul University getting a BFA in Theatre Arts with a Concentration in Directing. Upon my studies I discovered a deep love for experimental, devised and new work. I thrive in the "maybe."
+            </p>
+            <p>
+                As the daughter of two psychologists from East LA, I see being an artist as a privilege that will not be left to waste. I love creating work that leans towards healing. How can we create artistic practices and processes that support artists' well beings? How can the shows we present open a dialogue with the self? I strive to create rehearsal rooms and shows that support play, intellectual rigor and do not destroy artists' mental health.
+            </p>
+            <p>
+                Across my various theatrical disciplines you might have met me working at The Goodman, Lookingglass, The Neofuturists, TimeLine Theatre Company, and Free Street Theater...and I would love to work with you!
+            </p>
+            <p>
+                When I'm not in a rehearsal room, you will probably find me hanging out with AC (my cat), playing with my friends, at a thrift shop, or rewatching Sex and the City (I'm a Miranda and Carrie combo).
+            </p>
+        </div>
 
-        <h1>hi i’m sofi!</h1>
-
-        <!-- IMAGE: headshot / paper clip cluster graphic goes here eventually -->
-
-        <p>
-            I'm a Mexican-American theatrical artist born and raised in Los Angeles, based in Chicago. And guys...I'm really good. 
-
-        </p>
-
-        <p>
-            Currently, I am in my fourth year at The Theatre School at DePaul University getting a BFA in Theatre Arts with a Concentration in Directing. Upon my studies I discovered a deep love for experimental, devised and new work. I thrive in the "maybe."
-        </p>
-
-        <p>
-            As the daughter of two psychologists from East LA, I see being an artist as a privilege that will not be left to waste. I love creating work that leans towards healing. How can we create artistic practices and processes that support artists’ well beings? How can the shows we present open a dialogue with the self? I strive to create rehearsal rooms and shows that support play, intellectual rigor and do not destroy artists' mental health. 
-        </p>
-        
-        <p>
-            Across my various theatrical disciplines you might have met me working at The Goodman, Lookingglass, The Neofuturists, TimeLine Theatre Company, and Free Street Theater...and I would love to work with you!
-        </p>
-
-        <p>
-            When I'm not in a rehearsal room, you will probably find me hanging out with AC (my cat), playing with my friends, at a thrift shop, or rewatching Sex and the City (I’m a Miranda and Carrie combo). 
-        </p>
-
-
-
-        <a href="index.html" class="back-link">&larr; Back to Home</a>
-
+        <div class="about-footer">
+            <img src="docs/Torn2.png" class="scrap-deco left" alt="">
+            <img src="docs/small-pressed.png" class="scrap-deco right" alt="">
+            <a href="index.html" class="back-link">&larr; Back to Home</a>
+        </div>
     </div>
-
 </body>
 </html>
