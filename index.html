@@ -19,7 +19,437 @@
             align-items: center;
             height: 100vh;
             color: white;
+            text-align: center;<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofi Olona - Starter Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Fraunces', Georgia, serif;
+            background-image: url('attempt.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
             text-align: center;
+            
+            /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
+            cursor: grab;
+            overflow: hidden; /* Prevents ugly browser scrollbars */
+            user-select: none; /* Stops text highlighted accidentally while dragging */
+        }
+        .scrapbook-cluster {
+            pointer-events: none;
+        }
+        
+        .scrapbook-cluster img,
+        .scrapbook-cluster .cluster-label {
+            pointer-events: auto;
+        }
+        /* ADDED FOR DRAGGING STATE: Shows a gripping hand icon while holding mouse click down */
+        body:active {
+            cursor: grabbing;
+        }
+
+        @keyframes stopmotion-in {
+            from {
+                opacity: 0;
+                transform: translate(-60px, -80px) rotate(-40deg) scale(0.6);
+            }
+            to {
+                opacity: 1;
+                transform: translate(0, 0) rotate(var(--base-rotate, 0deg)) scale(1);
+            }
+        }
+
+        .stop-in {
+            animation-name: stopmotion-in;
+            animation-duration: 0.9s;
+            animation-timing-function: steps(6, end);
+            animation-fill-mode: forwards;
+        }
+
+        #main-content {
+            z-index: 2;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            transform-origin: 0 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+                .title-block {
+            padding-top: 20px;
+            padding-bottom: 200px;
+            z-index: 2;
+            color: rgb(73, 2, 80);
+            font-size: 85px;
+            font-family: 'Bentham', serif;
+            opacity: 0.8;
+            width: 200%;
+            max-width: 1300px;
+            text-align: center;
+            
+            /* ADDED FOR CANVAS MOVEMENT: Allows JavaScript to push this box left/right/up/down */
+            position: relative;
+            transform: translate(0px, 0px);
+        }
+
+        .tagline {
+            font-size: 60px;
+            margin-top: -70px;
+            font-weight: normal;
+            letter-spacing: 1px;
+            max-width: 2000px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+            opacity: 1;
+        }
+
+        .scrapbook-cluster {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .cluster-label {
+            position: absolute;
+            z-index: 10;
+            left: 54.5%;
+            z-index: 10;
+            text-shadow: 1px 1px 3px rbga(0,0,0,0.7); 
+            font-family: 'Special Elite' , monospace;
+            white-space: nowrap;
+        }
+
+        .sub-layer {
+            position: absolute;
+            height: auto;
+        }
+
+        #cluster-about {
+            margin-top: 40px;
+            margin-left: 70px;
+            --base-rotate: -3deg;
+            transform: rotate(var(--base-rotate));
+            animation-delay: 0s;
+            z-index: 20;
+        }
+            
+        #cluster-about img:nth-child(1) { width: 110%; left: -1200px; top: -600px; z-index: 1;}
+        #cluster-about img:nth-child(2) { width: 48%; top: -550px; left: -1100px; transform: rotate(-3deg); z-index: 2;}
+        #cluster-about img:nth-child(3) { width: 30%; top: -600px; left: -89%; transform: rotate(15deg); z-index: 3;}
+        #cluster-about img:nth-child(4) {width: 20%; top: -140px; left: -650px; z-index: 4;}
+        #cluster-about .cluster-label { top: -200px; left: -100.5%; color: rgb(154, 78, 174); font-size: 63px; transform: rotate(-2deg);}
+
+        #cluster-devised {
+            margin-top: -790px;
+            margin-left: -160px;
+            --base-rotate: 4deg;
+            transform: rotate(var(--base-rotate));
+            animation-delay: 0.45s;
+        }
+
+        #cluster-devised img:nth-child(1) {width: 75%; left: 290px; top: -800px; z-index: 1; transform: rotate(-10deg) }
+        #cluster-devised img:nth-child(2) {width: 30%; left: 550px; top: -550px; z-index: 2; transform: rotate(90deg); opacity: 0.8;}
+        #cluster-devised img:nth-child(3) {width: 15%; top: -450px; left: 500px; z-index: 3;}
+        #cluster-devised .cluster-label {top: -230px; left: 57%; font-size: 80px; color:rgb(154, 78, 174); transform: rotate(-12deg); }
+
+
+        #cluster-resume {
+            margin-top: -70px;
+            margin-left: -260px;
+            --base-rotate: 5deg;
+            transform: rotate(var(--base-rotate));
+            animation-delay: 0.15s;
+            z-index: 10;
+        }
+
+        #cluster-resume img:nth-child(1) {width: 100%; left: -490px; top: -90px; z-index: 1; transform: rotate(3deg);}
+        #cluster-resume img:nth-child(2) {width: 50%; top: 580px; left: -150px; z-index: 2;}
+        #cluster-resume img:nth-child(3) {width: 40%; top: 690px; left: -55px; z-index: 3;}
+        #cluster-resume img:nth-child(4) {width: 20%; top: 650px; left: 40px; z-index: 4; transform: rotate(40deg);}
+        #cluster-resume img:nth-child(5) {width: 10%; top: 800px; left: 45px; z-index: 5; transform: rotate(40deg);}
+        #cluster-resume img:nth-child(6) {width: 15%; top: 650px; left: -290px; z-index: 6;}
+        #cluster-resume .cluster-label {top: 120px; left: -24%; top: 450px; color: rgb(154, 78, 174); font-size: 110px;}
+
+       #cluster-directing {
+            margin-top: -940px;
+            margin-left: 80px;
+            --base-rotate: -6deg;
+            transform: rotate(var(--base-rotate));
+            animation-delay: 0.3s;
+        }
+
+        #cluster-directing img:nth-child(1) {width: 150%; left: -900px; top: -360px; z-index: 1;}
+        #cluster-directing img:nth-child(2) {width: 20%; top: -10px; left: -100px; z-index: 2;}
+        #cluster-directing img:nth-child(3) {width: 22%; top: -360px; left: -830px; z-index: 3;}
+        #cluster-directing .cluster-label {top: -100px; left: -105%; color: rgb(154, 78, 174); font-size: 100px;}
+
+        #cluster-writing {
+            margin-top: 310px;
+            margin-left: -470px;
+            --base-rotate: -8deg;
+            transform: rotate(var(--base-rotate));
+            animation-delay: 0.6s;
+        }
+
+        #cluster-writing img:nth-child(1) {width: 55%; left: 2000px; top: -350px; z-index: 1;}
+        #cluster-writing img:nth-child(2) {width: 15%; top: -290px; left: 2000px; z-index: 2;}
+        #cluster-writing .cluster-label {top: 90px; left: 2105px; color:rgb(154, 78, 174); font-size: 100px; transform: rotate(-3deg);}
+
+        
+        #cluster-press {
+            margin-top: 260px;
+            margin-left: 450px;
+            --base-rotate: 6deg;
+            transform: rotate(var(--base-rotate));
+            animation-delay: 0.75s;
+        }
+
+        #cluster-press img:nth-child(1) {width: 210%; left: 800px; top: 300px; z-index: 1;}
+        #cluster-press img:nth-child(2) {width: 90%; left: 1150px; top: 350px; z-index: 2; opacity: 0.8;}
+        #cluster-press img:nth-child(3) {width: 45%; top: 600px; left: 920px; z-index: 3;}
+        #cluster-press .cluster-label {top: 500px; left: 252%; color:rgb(154, 78, 174); font-size: 85px;}
+
+        .polaroid {
+            position: absolute;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+         #polaroid1 {top: 800px; left: 300px; width: 50%; transform: rotate(12deg);}
+
+        .fun-image {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #teaching { top: 860px; left: 350px; width: 40%; transform: rotate(12deg);}
+        #polaroid-landscape {top: -600px; left: 850px; width: 60%; transform: rotate(-12deg);}  
+        #spiral {top: -505px; left: 906px; width: 45%; transform: rotate(-9deg);}
+        #showshomepage1 {top: 1300px; left: 700px; width: 95%; transform: rotate(-9deg);}
+        #polaroids {top: 900px; left: 1100px; width: 140%;}
+        #showshomepage2 {top: -600px; left: -1600px; width: 100%; transform: rotate(-50deg);}
+        #flowercamera {top: -1100px; left: -400px; width: 90%; transform: rotate(-50deg);}
+        #flowercard {top: 400px; left: 500px; width: 100%; transform: rotate(-50deg);}
+        #flowertape {top: -800px; left: -600px; width: 120%; transform: rotate(-50deg);}
+        #swirl {top: 400px; left: -500px; width: 70%; transform: rotate(-50deg);}
+        #stars {top: 1000px; left: 0px; width: 100%; transform: rotate(-50deg);}
+        #musicnote {top: -100px; left: 1100px; width: 60%; transform: rotate(-5deg);}
+
+        /* --- hover zoom for selected decorations --- */
+       /* --- hover lift for snoopy-polaroid, polaroids, cat --- */
+        #snoopy-polaroid, #polaroids, #cat {
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bentham&display=swap" rel="stylesheet">
+<body>
+    <header id="name">Sofi Olona</header>
+    <div class="content-container" id="main-content">
+        <div class="title-block">
+            <h1>Sofi Olona</h1>
+            <p class="tagline">Theatrical Director, Devisor, & Writer, Mexican Badass, Pretty Girl</p>
+        </div>
+
+        <a href="about.html" class="scrapbook-cluster stop-in" id="cluster-about">
+            <img src="docs/Paper clip papers.png" class="sub-layer base-paper" alt="">
+            <img src="docs/sofiolonaheadshot (1).jpg" class="sub-layer main-photo" alt="">
+            <img src="docs/Press-flower-1.png" class="sub-layer tape-accent" alt="">
+            <img src="docs/stamp.png" class="sub-layer stamp" alt="">
+            <div class="cluster-label">About Me</div>
+        </a>
+
+        <a href="resume.html" class="scrapbook-cluster stop-in" id="cluster-resume">
+            <img src="docs/folder2.png" class="sub-layer folder" alt="">
+            <img src="docs/Torn2.png" class="sub-layer torn" alt="">
+            <img src="docs/purple paper torn.png" class="sub-layer purple-torn" alt="">
+            <img src="docs/small-pressed.png" class="sub-layer flower-pressed" alt="">
+            <img src="docs/Washi-2.png" class="sub-layer washi-tape" alt="">
+            <img src="docs/stamp.png" class="sub-layer stamp" alt="">
+            <div class="cluster-label">Resume</div>
+        </a>
+        <a href="directing.html" class="scrapbook-cluster stop-in" id="cluster-directing">
+            <img src="docs/vintage scrapbook vibes.png" class="sub-layer scrapbook-things" alt="">
+            <img src="docs/press-flower.png" class="sub-layer flower" alt="">
+            <img src="docs/stamp.png" class="sub-layer stamp" alt="">
+            <div class="cluster-label">Directing</div>
+        </a>
+        <a href="devised.html" class="scrapbook-cluster stop-in" id="cluster-devised">
+            <img src="docs/book2.png" class="sub-layer book" alt="">
+            <img src="docs/Press Flower 3.png" class="sub-layer flowers3" alt="">
+            <img src="docs/stamp.png" class="sub-layer stamp" alt="">
+            <div class="cluster-label">Devised</div>
+        </a>
+
+        <a href="writing.html" class="scrapbook-cluster stop-in" id="cluster-writing">
+            <img src="docs/herego.png" class="sub-layer books" alt="">
+            <img src="docs/stamp.png" class="sub-layer stamp" alt="">
+            <div class="cluster-label">Writing</div>
+        </a>
+
+        <a href="press.html" class="scrapbook-cluster stop-in" id="cluster-press">
+            <img src="docs/openbook.png" class="sub-layer open-book" alt="">
+            <img src="docs/flowers2.png" class="sub-layer flower-3" alt="">
+            <img src="docs/stamp.png" class="sub-layer stamp" alt="">
+            <div class="cluster-label">Press</div>
+        </a>
+
+        <img src="docs/polaroid1.png" class="polaroid" id="polaroid1" alt="">
+        <img src="docs/teaching1.png"  class="fun-image" id="teaching" alt="">
+        <img src="docs/polaroid-landscape.png" class="polaroid" id="polaroid-landscape" alt="">
+        <img src="docs/spiral2.png" class="fun-image" id="spiral" alt="">
+        <img src="docs/showshomepage1.png" class="fun-image" id="showshomepage1" alt="">
+        <img src="docs/sofi-friends.png" class="fun-image" id="polaroids" alt="">
+        <img src="docs/showshomepage2.png" class="fun-image" id="showshomepage2" alt="">
+        <img src="docs/cameraflower.png" class="fun-image" id="flowercamera" alt="">
+        <img src="docs/cardflower.png" class="fun-image" id="flowercard" alt="">
+        <img src="docs/tapeflower.png" class="fun-image" id="flowertape" alt="">
+        <img src="docs/swirl.png" class="fun-image" id="swirl" alt="">
+        <img src="docs/stars.png" class="fun-image" id="stars" alt="">
+        <img src="docs/musicnote.png" class="fun-image" id="musicnote" alt="">
+    </div>
+
+    <!-- VANILLA JAVASCRIPT FOR INFINITE CANVAS MOVE -->
+    <script>
+        let currentX = 0;
+        let currentY = 0;
+        let currentScale = 1;
+        let isDragging = false;
+        let isZoomed = false;
+        let startX, startY;
+
+        const mainContent = document.getElementById('main-content');
+
+        document.querySelectorAll('.stop-in').forEach((el) => {
+            el.addEventListener('animationend', () => {
+                el.style.animation = 'none';
+            }, { once: true });
+        });
+
+        function applyTransform(x, y, scale, animate) {
+            mainContent.style.transition = animate ? 'transform 0.6s ease' : 'none';
+            mainContent.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+            document.body.style.backgroundPosition = `calc(50% + ${x}px) calc(50% + ${y}px)`;
+        }
+
+        // --- Auto-fit the whole scrapbook canvas into the viewport on load ---
+        // This measures every image/cluster/title on the page and calculates
+        // the scale + position needed to center all of it in view, so nothing
+        // needs to be hand-tuned per element or re-tuned every time the scale
+        // changes. This ONE number is the only thing to adjust if you want the
+        // starting view tighter (bigger) or looser (smaller):
+        const VIEWPORT_FILL = 0.85; // 0-1, how much of the screen the content should fill
+        const NUDGE_X = 80; // px, shifts the centered view left(-) or right(+)
+        const NUDGE_Y = 0;  // px, shifts the centered view up(-) or down(+)
+
+        function fitCanvasToViewport() {
+            mainContent.style.transition = 'none';
+            mainContent.style.transform = 'translate(0px, 0px) scale(1)';
+
+            const items = mainContent.querySelectorAll('.scrapbook-cluster, .polaroid, .fun-image, .title-block');
+            const mainRect = mainContent.getBoundingClientRect();
+
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            items.forEach((el) => {
+                const r = el.getBoundingClientRect();
+                minX = Math.min(minX, r.left);
+                minY = Math.min(minY, r.top);
+                maxX = Math.max(maxX, r.right);
+                maxY = Math.max(maxY, r.bottom);
+            });
+
+            const contentWidth = maxX - minX;
+            const contentHeight = maxY - minY;
+            const contentCenterX = minX + contentWidth / 2;
+            const contentCenterY = minY + contentHeight / 2;
+
+            const scaleX = (window.innerWidth * VIEWPORT_FILL) / contentWidth;
+            const scaleY = (window.innerHeight * VIEWPORT_FILL) / contentHeight;
+            currentScale = Math.min(scaleX, scaleY, 1);
+
+            const originX = mainRect.left;
+            const originY = mainRect.top;
+
+            currentX = (window.innerWidth / 2) - currentScale * contentCenterX - (1 - currentScale) * originX + NUDGE_X;
+            currentY = (window.innerHeight / 2) - currentScale * contentCenterY - (1 - currentScale) * originY + NUDGE_Y;
+
+            applyTransform(currentX, currentY, currentScale, false);
+            mainContent.style.opacity = '1';
+        }
+
+        if (document.readyState === 'complete') {
+            fitCanvasToViewport();
+        } else {
+            window.addEventListener('load', fitCanvasToViewport);
+        }
+
+        window.addEventListener('mousedown', (e) => {
+            if (isZoomed) return; // don't drag while zoomed into something
+            isDragging = true;
+            startX = e.clientX - currentX;
+            startY = e.clientY - currentY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            currentX = e.clientX - startX;
+            currentY = e.clientY - startY;
+            applyTransform(currentX, currentY, currentScale, false);
+        });
+
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        window.addEventListener('mouseleave', () => { isDragging = false; });
+
+        // --- Camera zoom toward a specific element ---
+        function zoomToElement(el, zoomScale = 2.5) {
+            const rect = mainContent.getBoundingClientRect();
+            const baseX = rect.left - currentX;
+            const baseY = rect.top - currentY;
+
+            const cx = el.offsetLeft + el.offsetWidth / 2;
+            const cy = el.offsetTop + el.offsetHeight / 2;
+
+            const targetX = window.innerWidth / 2 - baseX - zoomScale * cx;
+            const targetY = window.innerHeight / 2 - baseY - zoomScale * cy;
+
+            isZoomed = true;
+            applyTransform(targetX, targetY, zoomScale, true);
+        }
+
+        function zoomOut() {
+            isZoomed = false;
+            applyTransform(currentX, currentY, currentScale, true);
+        }
+
+        ['snoopy-polaroid', 'polaroids', 'cat'].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('mouseenter', () => zoomToElement(el, 2.5));
+                el.addEventListener('mouseleave', zoomOut);
+            }
+        });
+    </script>
+</body>
+</html>
             
             /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
             cursor: grab;
@@ -336,7 +766,7 @@
         // needs to be hand-tuned per element or re-tuned every time the scale
         // changes. This ONE number is the only thing to adjust if you want the
         // starting view tighter (bigger) or looser (smaller):
-        const VIEWPORT_FILL = 0.85; // 0-1, how much of the screen the content should fill
+        const VIEWPORT_FILL = 1; // 0-1, how much of the screen the content should fill
         const NUDGE_X = -80; // px, shifts the centered view left(-) or right(+)
         const NUDGE_Y = 0;  // px, shifts the centered view up(-) or down(+)
 
