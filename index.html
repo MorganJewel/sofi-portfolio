@@ -357,7 +357,7 @@
         // needs to be hand-tuned per element or re-tuned every time the scale
         // changes. This ONE number is the only thing to adjust if you want the
         // starting view tighter (bigger) or looser (smaller):
-        const VIEWPORT_FILL = 0.85; // 0-1, how much of the screen the content should fill
+        const VIEWPORT_FILL = 1; // 0-1, how much of the screen the content should fill
         const NUDGE_X = 80; // px, shifts the centered view left(-) or right(+)
         const NUDGE_Y = 0;  // px, shifts the centered view up(-) or down(+)
 
@@ -450,8 +450,8 @@
     </script>
 </body>
 </html>
-            
-            /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
+    <style>
+        /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
             cursor: grab;
             overflow: hidden; /* Prevents ugly browser scrollbars */
             user-select: none; /* Stops text highlighted accidentally while dragging */
