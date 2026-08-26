@@ -63,6 +63,8 @@
             max-width: 800px;
             position: relative;
             transform-origin: 0 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
                 .title-block {
@@ -307,9 +309,9 @@
 
     <!-- VANILLA JAVASCRIPT FOR INFINITE CANVAS MOVE -->
     <script>
-        let currentX = -500;
-        let currentY = -1000;
-        let currentScale = 0.5;
+        let currentX = 0;
+        let currentY = 0;
+        let currentScale = 1;
         let isDragging = false;
         let isZoomed = false;
         let startX, startY;
@@ -328,7 +330,54 @@
             document.body.style.backgroundPosition = `calc(50% + ${x}px) calc(50% + ${y}px)`;
         }
 
-        applyTransform(currentX, currentY, currentScale, false); // set starting position
+        // --- Auto-fit the whole scrapbook canvas into the viewport on load ---
+        // This measures every image/cluster/title on the page and calculates
+        // the scale + position needed to center all of it in view, so nothing
+        // needs to be hand-tuned per element or re-tuned every time the scale
+        // changes. This ONE number is the only thing to adjust if you want the
+        // starting view tighter (bigger) or looser (smaller):
+        const VIEWPORT_FILL = 0.85; // 0-1, how much of the screen the content should fill
+
+        function fitCanvasToViewport() {
+            mainContent.style.transition = 'none';
+            mainContent.style.transform = 'translate(0px, 0px) scale(1)';
+
+            const items = mainContent.querySelectorAll('.scrapbook-cluster, .polaroid, .fun-image, .title-block');
+            const mainRect = mainContent.getBoundingClientRect();
+
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            items.forEach((el) => {
+                const r = el.getBoundingClientRect();
+                minX = Math.min(minX, r.left);
+                minY = Math.min(minY, r.top);
+                maxX = Math.max(maxX, r.right);
+                maxY = Math.max(maxY, r.bottom);
+            });
+
+            const contentWidth = maxX - minX;
+            const contentHeight = maxY - minY;
+            const contentCenterX = minX + contentWidth / 2;
+            const contentCenterY = minY + contentHeight / 2;
+
+            const scaleX = (window.innerWidth * VIEWPORT_FILL) / contentWidth;
+            const scaleY = (window.innerHeight * VIEWPORT_FILL) / contentHeight;
+            currentScale = Math.min(scaleX, scaleY, 1);
+
+            const originX = mainRect.left;
+            const originY = mainRect.top;
+
+            currentX = (window.innerWidth / 2) - currentScale * contentCenterX - (1 - currentScale) * originX;
+            currentY = (window.innerHeight / 2) - currentScale * contentCenterY - (1 - currentScale) * originY;
+
+            applyTransform(currentX, currentY, currentScale, false);
+            mainContent.style.opacity = '1';
+        }
+
+        if (document.readyState === 'complete') {
+            fitCanvasToViewport();
+        } else {
+            window.addEventListener('load', fitCanvasToViewport);
+        }
 
         window.addEventListener('mousedown', (e) => {
             if (isZoomed) return; // don't drag while zoomed into something
@@ -370,8 +419,10 @@
 
         ['snoopy-polaroid', 'polaroids', 'cat'].forEach((id) => {
             const el = document.getElementById(id);
-            el.addEventListener('mouseenter', () => zoomToElement(el, 2.5));
-            el.addEventListener('mouseleave', zoomOut);
+            if (el) {
+                el.addEventListener('mouseenter', () => zoomToElement(el, 2.5));
+                el.addEventListener('mouseleave', zoomOut);
+            }
         });
     </script>
 </body>
