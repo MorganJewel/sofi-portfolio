@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sofi Olona - About</title>
+    <title>Sofi Olona - Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bentham&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --deep-plum: #4B0350;
+            --accent-mauve: #9A4EAE;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
             padding: 0;
@@ -12,78 +20,95 @@
             background-image: url('attempt.png');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             background-repeat: repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             color: white;
             text-align: center;
-
-            /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
-            cursor: grab;
-            overflow: hidden; /* Prevents ugly browser scrollbars */
-            user-select: none; /* Stops text highlighted accidentally while dragging */
         }
 
-        .content-container {
-            max-width: 600px;
-            padding: 40px;
+        .resume-wrap {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 70px 24px 100px;
         }
 
-        h1 {
+        .page-title {
             font-family: 'Bentham', serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            color: var(--deep-plum);
+            letter-spacing: 2px;
+            margin: 0;
         }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 16px;
+        .byline {
+            font-family: 'Special Elite', monospace;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: var(--accent-mauve);
+            letter-spacing: 3px;
+            margin: 12px 0 0;
+        }
+
+        .divider {
+            width: 140px;
+            height: 2px;
+            margin: 34px auto;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--accent-mauve) 0 10px,
+                transparent 10px 16px
+            );
+            opacity: 0.8;
+            border: none;
+        }
+
+        .resume-frame {
+            width: 100%;
+            height: 1100px;
+            border: none;
+            display: block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            background: white;
         }
 
         .back-link {
-            margin-top: 30px;
             display: inline-block;
+            margin-top: 50px;
             color: white;
-            text-decoration: underline;
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.8);
             font-family: 'Special Elite', monospace;
-            font-size: 0.9rem;
-            cursor: pointer;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            transition: opacity 0.2s ease;
         }
 
-        .back-link:hover {
-            opacity: 0.7;
-        }
+        .back-link:hover { opacity: 0.65; }
 
-        /* IMAGE SLOT NOTE: no image CSS classes added yet, on purpose */
+        @media (max-width: 600px) {
+            .resume-frame { height: 700px; }
+        }
     </style>
 </head>
 <body>
+    <div class="resume-wrap" id="resume-content">
+        <h1 class="page-title">Resume</h1>
+        <hr class="divider">
 
-    <div class="content-container" id="main-content">
+        <iframe
+            class="resume-frame"
+            src="docs/resume/Olona,%20Sofi_Resume%20(1)%20(2).pdf"
+            title="Sofi Olona Resume">
+            <p>Your browser doesn't support embedded PDFs.
+               <a href="docs/resume/Olona,%20Sofi_Resume%20(1)%20(2).pdf">Click here to view the resume.</a>
+            </p>
+        </iframe>
 
-        <h1>Resume</h1>
-
-        <!-- IMAGE: headshot / paper clip cluster graphic goes here eventually -->
-
-        <p>
-            [Placeholder bio text goes here. Replace this paragraph with Sofi's
-            actual about-me copy — background, artistic identity, what drives
-            her work as a theatrical director, devisor, and writer.]
-        </p>
-
-        <p>
-            [Second placeholder paragraph — could cover training, influences,
-            or a personal note. Swap this out with real content whenever it's ready.]
-        </p>
-
-        <a href="index.html" class="back-link">&larr; Back to Home</a>
-
+        <div>
+            <a href="index.html" class="back-link">&larr; Back to Home</a>
+        </div>
     </div>
-
 </body>
 </html>
