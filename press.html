@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sofi Olona - About</title>
+    <title>Sofi Olona - Press</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bentham&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --deep-plum: #4B0350;
+            --accent-mauve: #9A4EAE;
+            --ink: #3B2A2E;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
             padding: 0;
@@ -12,78 +21,219 @@
             background-image: url('attempt.png');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             background-repeat: repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             color: white;
             text-align: center;
-
-            /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
-            cursor: grab;
-            overflow: hidden; /* Prevents ugly browser scrollbars */
-            user-select: none; /* Stops text highlighted accidentally while dragging */
         }
 
-        .content-container {
-            max-width: 600px;
-            padding: 40px;
+        .press-wrap {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 70px 24px 100px;
         }
 
-        h1 {
-            font-family: 'Bentham', serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+        /* ---------- The whole newspaper sheet, masthead included ---------- */
+        .newspaper-sheet {
+            background-image: url('docs/press/newspapertexture.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            color: var(--ink);
+            text-align: left;
+            padding: 44px 48px 56px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
         }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-
-        .back-link {
-            margin-top: 30px;
-            display: inline-block;
-            color: white;
-            text-decoration: underline;
+        .dateline {
             font-family: 'Special Elite', monospace;
-            font-size: 0.9rem;
-            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: var(--deep-plum);
+            margin: 0 0 10px;
+            text-align: center;
         }
 
-        .back-link:hover {
-            opacity: 0.7;
+        .masthead-rule {
+            width: 100%;
+            height: 2px;
+            background: var(--deep-plum);
+            opacity: 0.85;
+            border: none;
+            margin: 10px 0;
         }
 
-        /* IMAGE SLOT NOTE: no image CSS classes added yet, on purpose */
+        .masthead-rule.thin {
+            height: 1px;
+            margin: 6px 0 30px;
+        }
+
+        .page-title {
+            font-family: 'Bentham', serif;
+            font-size: clamp(3rem, 6.5vw, 5.5rem);
+            color: var(--deep-plum);
+            letter-spacing: 4px;
+            margin: 0;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* ---------- Story columns (real newspaper text flow) ---------- */
+        .story-columns {
+            column-count: 2;
+            column-gap: 40px;
+            column-rule: 1px solid rgba(59, 42, 46, 0.25);
+        }
+
+        .story {
+            break-inside: avoid;
+            margin-bottom: 30px;
+        }
+
+        .press-photo {
+            width: 140px;
+            aspect-ratio: 3 / 4;
+            border: 1px solid rgba(59, 42, 46, 0.35);
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(59, 42, 46, 0.06),
+                rgba(59, 42, 46, 0.06) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Special Elite', monospace;
+            font-size: 0.75rem;
+            color: rgba(59, 42, 46, 0.55);
+            letter-spacing: 1px;
+            padding: 10px;
+        }
+
+        .story.float-left .press-photo {
+            float: left;
+            margin: 0 18px 8px 0;
+        }
+
+        .story.float-right .press-photo {
+            float: right;
+            margin: 0 0 8px 18px;
+        }
+
+        .show-title {
+            font-family: 'Bentham', serif;
+            font-size: 1.5rem;
+            color: var(--deep-plum);
+            margin: 0 0 4px;
+            line-height: 1.2;
+        }
+
+        .show-meta {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 1px;
+            color: var(--accent-mauve);
+            margin: 0 0 14px;
+            text-transform: uppercase;
+        }
+
+        .quote {
+            font-size: 1.05rem;
+            font-style: italic;
+            line-height: 1.5;
+            margin: 0 0 6px;
+        }
+
+        .quote-attr {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: var(--accent-mauve);
+            margin: 0 0 14px;
+        }
+
+        .quote-attr::before {
+            content: "— ";
+        }
+
+        .quote:last-of-type,
+        .quote-attr:last-of-type {
+            margin-bottom: 0;
+        }
+
+        /* ---------- Footer ---------- */
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.8);
+            font-family: 'Special Elite', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            transition: opacity 0.2s ease;
+        }
+
+        .back-link:hover { opacity: 0.65; }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 700px) {
+            .story-columns {
+                column-count: 1;
+            }
+            .newspaper-sheet {
+                padding: 34px 24px 40px;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="press-wrap">
+        <div class="newspaper-sheet">
+            <p class="dateline">SOFI OLONA &middot; CHICAGO, IL</p>
+            <hr class="masthead-rule">
+            <h1 class="page-title">Press</h1>
+            <hr class="masthead-rule thin">
 
-    <div class="content-container" id="main-content">
+            <div class="story-columns">
 
-        <h1>Press</h1>
+                <div class="story float-left">
+                    <div class="press-photo">[ production photo ]</div>
+                    <h2 class="show-title">An Enemy of the People</h2>
+                    <p class="show-meta">TimeLine Theatre Company &mdash; Directing Apprentice, Spring 2026</p>
+                    <p class="quote">"But as anyone who has followed TimeLine knows, they don't need star casting to pull off transcendent shows. And this production, directed by Ron OJ Parson, features a terrific ensemble that finds the humor, pathos, and grit in the characters."</p>
+                    <p class="quote-attr">Chicago Reader</p>
+                    <p class="quote">"This is an excellent production and a great way to christen the new home of a company focused on history&mdash;with dirty water from the past."</p>
+                    <p class="quote-attr">Newcity Stage</p>
+                </div>
 
-        <!-- IMAGE: headshot / paper clip cluster graphic goes here eventually -->
+                <div class="story float-right">
+                    <div class="press-photo">[ production photo ]</div>
+                    <h2 class="show-title">Abby Paj Tries to Stay Alive</h2>
+                    <p class="show-meta">The Neo-Futurists &mdash; Assistant Stage Manager, Fall 2025</p>
+                    <p class="quote">"humourous and uneasy manifesto"</p>
+                    <p class="quote-attr">Chicago Reader</p>
+                </div>
 
-        <p>
-            [Placeholder bio text goes here. Replace this paragraph with Sofi's
-            actual about-me copy — background, artistic identity, what drives
-            her work as a theatrical director, devisor, and writer.]
-        </p>
+                <div class="story float-left">
+                    <div class="press-photo">[ production photo ]</div>
+                    <h2 class="show-title">Parched(2)O</h2>
+                    <p class="show-meta">Free Street Theater &mdash; Assistant Stage Manager, Spring 2025</p>
+                    <p class="quote">"For the youth, this is an opportunity to critically engage with their peers on issues relevant to their daily lives."</p>
+                    <p class="quote-attr">Rescripted</p>
+                </div>
 
-        <p>
-            [Second placeholder paragraph — could cover training, influences,
-            or a personal note. Swap this out with real content whenever it's ready.]
-        </p>
+            </div>
+        </div>
 
-        <a href="index.html" class="back-link">&larr; Back to Home</a>
-
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link">&larr; Back to Home</a>
+        </div>
     </div>
-
 </body>
 </html>
