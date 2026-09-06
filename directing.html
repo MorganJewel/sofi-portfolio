@@ -80,11 +80,7 @@
         /* ---------- Posting cards (pinned to the board) ---------- */
         .posting-card {
             position: relative;
-            background: var(--paper);
-            color: var(--ink);
             text-align: left;
-            padding: 26px;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
             text-decoration: none;
             display: block;
         }
@@ -188,12 +184,13 @@
             color: var(--deep-plum);
             margin: 0;
             line-height: 1.25;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
         }
 
         .posting-subtitle {
             font-size: 1rem;
             font-style: italic;
-            color: var(--ink);
+            color: var(--accent-mauve);
             display: inline-block;
         }
 
@@ -204,12 +201,15 @@
             color: var(--accent-mauve);
             text-transform: uppercase;
             margin: 8px 0 10px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
         }
 
         .posting-detail {
             font-size: 0.95rem;
             line-height: 1.5;
             margin: 0 0 18px;
+            color: white;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.45);
         }
 
         /* ---------- Carousel ---------- */
