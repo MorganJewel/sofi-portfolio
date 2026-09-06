@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sofi Olona - About</title>
+    <title>Sofi Olona - Directing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Bentham&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --deep-plum: #4B0350;
+            --accent-mauve: #9A4EAE;
+            --ink: #3B2A2E;
+            --paper: rgba(251, 241, 228, 0.95);
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
             padding: 0;
@@ -12,78 +22,387 @@
             background-image: url('attempt.png');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             background-repeat: repeat;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             color: white;
             text-align: center;
-
-            /* ADDED FOR DRAGGING VISUALS: Indicates the screen can be grabbed */
-            cursor: grab;
-            overflow: hidden; /* Prevents ugly browser scrollbars */
-            user-select: none; /* Stops text highlighted accidentally while dragging */
         }
 
-        .content-container {
-            max-width: 600px;
-            padding: 40px;
+        .directing-wrap {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 70px 24px 100px;
         }
 
-        h1 {
+        .page-title {
             font-family: 'Bentham', serif;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            font-size: clamp(3rem, 6.5vw, 5.5rem);
+            color: var(--deep-plum);
+            letter-spacing: 3px;
+            margin: 0;
         }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+        .divider {
+            width: 140px;
+            height: 2px;
+            margin: 30px auto 50px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--accent-mauve) 0 10px,
+                transparent 10px 16px
+            );
+            opacity: 0.8;
+            border: none;
+        }
+
+        .board-section {
+            margin-bottom: 60px;
+        }
+
+        .section-label {
+            font-family: 'Special Elite', monospace;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            letter-spacing: 2px;
+            color: var(--accent-mauve);
+            text-transform: uppercase;
+            margin: 0 0 30px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .posting-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px 30px;
+        }
+
+        /* ---------- Posting cards (pinned to the board) ---------- */
+        .posting-card {
+            position: relative;
+            background: var(--paper);
+            color: var(--ink);
+            text-align: left;
+            padding: 26px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            display: block;
+        }
+
+        .posting-grid.two-col .posting-card:nth-child(1) { transform: rotate(-1.2deg); }
+        .posting-grid.two-col .posting-card:nth-child(2) { transform: rotate(1deg); }
+
+        .link-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .link-card:hover {
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .pushpin {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #d98fe0, var(--accent-mauve) 60%, var(--deep-plum) 100%);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45);
+        }
+
+        .posting-photo {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            border: 1px solid rgba(59, 42, 46, 0.3);
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(59, 42, 46, 0.06),
+                rgba(59, 42, 46, 0.06) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Special Elite', monospace;
+            font-size: 0.85rem;
+            color: rgba(59, 42, 46, 0.55);
+            letter-spacing: 1px;
             margin-bottom: 16px;
         }
 
-        .back-link {
-            margin-top: 30px;
-            display: inline-block;
-            color: white;
-            text-decoration: underline;
+        /* ---------- Polaroid frame (real image) ---------- */
+        .polaroid {
+            position: relative;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .polaroid img.frame {
+            display: block;
+            width: 100%;
+            height: auto;
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .polaroid .photo-slot {
+            position: absolute;
+            top: 7%;
+            left: 8%;
+            right: 8%;
+            bottom: 24%;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(59, 42, 46, 0.06),
+                rgba(59, 42, 46, 0.06) 10px,
+                transparent 10px,
+                transparent 20px
+            );
             font-family: 'Special Elite', monospace;
-            font-size: 0.9rem;
+            font-size: 0.78rem;
+            color: rgba(59, 42, 46, 0.55);
+            letter-spacing: 1px;
+            padding: 6px;
+        }
+
+        .polaroid .photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .posting-title {
+            font-family: 'Bentham', serif;
+            font-size: 1.4rem;
+            color: var(--deep-plum);
+            margin: 0;
+            line-height: 1.25;
+        }
+
+        .posting-subtitle {
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--ink);
+            display: inline-block;
+        }
+
+        .posting-meta {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            color: var(--accent-mauve);
+            text-transform: uppercase;
+            margin: 8px 0 10px;
+        }
+
+        .posting-detail {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0 0 18px;
+        }
+
+        /* ---------- Carousel ---------- */
+        .carousel {
+            position: relative;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-slide {
+            flex: 0 0 70%;
+            scroll-snap-align: start;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--deep-plum);
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1;
             cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
         }
 
-        .back-link:hover {
-            opacity: 0.7;
+        .carousel-btn.prev { left: -14px; }
+        .carousel-btn.next { right: -14px; }
+        .carousel-btn:hover { opacity: 0.85; }
+
+        /* ---------- Footer ---------- */
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.8);
+            font-family: 'Special Elite', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            transition: opacity 0.2s ease;
         }
 
-        /* IMAGE SLOT NOTE: no image CSS classes added yet, on purpose */
+        .back-link:hover { opacity: 0.65; }
+
+        @media (max-width: 700px) {
+            .posting-grid {
+                grid-template-columns: 1fr;
+            }
+            .posting-grid.two-col .posting-card:nth-child(1),
+            .posting-grid.two-col .posting-card:nth-child(2) {
+                transform: rotate(0deg);
+            }
+            .carousel-slide { flex-basis: 85%; }
+        }
     </style>
 </head>
 <body>
+    <div class="directing-wrap">
+        <h1 class="page-title">Directing</h1>
+        <hr class="divider">
 
-    <div class="content-container" id="main-content">
+        <section class="board-section">
+            <h2 class="section-label">Directing</h2>
+            <div class="posting-grid two-col">
 
-        <h1>Directing</h1>
+                <a class="posting-card link-card" href="chicago-pope.html">
+                    <span class="pushpin"></span>
+                    <div class="polaroid">
+                        <img src="docs/directing/polaroid-directing.png" class="frame" alt="">
+                        <div class="photo-slot">[ show photo ]</div>
+                    </div>
+                    <h3 class="posting-title">Chicago Pope Weighs Heavy on my Heart</h3>
+                </a>
 
-        <!-- IMAGE: headshot / paper clip cluster graphic goes here eventually -->
+                <a class="posting-card link-card" href="mutually-assured-self-destruction.html">
+                    <span class="pushpin"></span>
+                    <div class="polaroid">
+                        <img src="docs/directing/polaroid-directing.png" class="frame" alt="">
+                        <div class="photo-slot">[ show photo ]</div>
+                    </div>
+                    <h3 class="posting-title">Mutually Assured Self-Destruction<br><span class="posting-subtitle">i wanna feel pretty</span></h3>
+                </a>
 
-        <p>
-            [Placeholder bio text goes here. Replace this paragraph with Sofi's
-            actual about-me copy — background, artistic identity, what drives
-            her work as a theatrical director, devisor, and writer.]
-        </p>
+            </div>
+        </section>
 
-        <p>
-            [Second placeholder paragraph — could cover training, influences,
-            or a personal note. Swap this out with real content whenever it's ready.]
-        </p>
+        <section class="board-section">
+            <h2 class="section-label">Assistant Direction | Directing Apprenticeships</h2>
+            <div class="posting-grid two-col">
+
+                <div class="posting-card">
+                    <span class="pushpin"></span>
+                    <h3 class="posting-title">An Enemy of the People</h3>
+                    <p class="posting-meta">Directing Apprentice | TimeLine Theatre Company</p>
+                    <p class="posting-detail">By Henrik Ibsen, a New Version by Amy Herzog<br>Directed by Ron OJ Parson</p>
+                    <div class="carousel">
+                        <div class="carousel-track">
+                            <div class="carousel-slide">
+                                <div class="polaroid">
+                                    <img src="docs/directing/polaroid-directing.png" class="frame" alt="">
+                                    <div class="photo-slot">[ photo 1 ]</div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="polaroid">
+                                    <img src="docs/directing/polaroid-directing.png" class="frame" alt="">
+                                    <div class="photo-slot">[ photo 2 ]</div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="polaroid">
+                                    <img src="docs/directing/polaroid-directing.png" class="frame" alt="">
+                                    <div class="photo-slot">[ photo 3 ]</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn prev" aria-label="Previous photo">&#8249;</button>
+                        <button class="carousel-btn next" aria-label="Next photo">&#8250;</button>
+                    </div>
+                </div>
+
+                <div class="posting-card">
+                    <span class="pushpin"></span>
+                    <h3 class="posting-title">feminine octagon <span class="posting-subtitle">[or, aristotle can eat me]</span></h3>
+                    <p class="posting-meta">Assistant Director | The Theatre School at DePaul University</p>
+                    <p class="posting-detail">By Aviv Gijsbers van Wijk<br>Directed by Kristina Fluty</p>
+                    <div class="carousel">
+                        <div class="carousel-track">
+                            <div class="carousel-slide">
+                                <div class="polaroid">
+                                    <img src="docs/directing/polaroid-directing.png" class="frame" alt="">
+                                    <div class="photo-slot">[ photo 1 ]</div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="polaroid">
+                                    <img src="docs/directing/polaroid-directing.png" class="frame" alt="">
+                                    <div class="photo-slot">[ photo 2 ]</div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="polaroid">
+                                    <img src="docs/directing/polaroid-directing.png" class="frame" alt="">
+                                    <div class="photo-slot">[ photo 3 ]</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn prev" aria-label="Previous photo">&#8249;</button>
+                        <button class="carousel-btn next" aria-label="Next photo">&#8250;</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
 
         <a href="index.html" class="back-link">&larr; Back to Home</a>
-
     </div>
 
+    <script>
+        document.querySelectorAll('.carousel').forEach((carousel) => {
+            const track = carousel.querySelector('.carousel-track');
+            const prevBtn = carousel.querySelector('.prev');
+            const nextBtn = carousel.querySelector('.next');
+
+            const slideStep = () => {
+                const slide = track.querySelector('.carousel-slide');
+                return slide ? slide.offsetWidth + 12 : 300;
+            };
+
+            prevBtn.addEventListener('click', () => {
+                track.scrollBy({ left: -slideStep(), behavior: 'smooth' });
+            });
+            nextBtn.addEventListener('click', () => {
+                track.scrollBy({ left: slideStep(), behavior: 'smooth' });
+            });
+        });
+    </script>
 </body>
 </html>
